@@ -1,0 +1,16 @@
+.left-nav {
+  position: fixed;
+  min-width: 200px;
+}
+.left-nav .left-nav-header {
+  margin-top: 60px;
+}
+.left-nav .left-nav-header .left-nav-header-content {
+  height: 30px;
+  line-height: 30px;
+  font-size: 20px;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+  vertical-align: middle;
+}
