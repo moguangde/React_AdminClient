@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {message} from 'antd'
-import { BrowserRouter, Switch, Route} from "react-router-dom"
-
+import { HashRouter, Switch, Route} from "react-router-dom"
 import Login from './pages/login/login.jsx'
 import Admin from './pages/admin/admin.jsx'
 
@@ -16,13 +15,13 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Switch> 
           {/* /login */}
           <Route path="/login" component={Login} />
           <Route path="/" component={Admin} />
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     )
   }
 }
