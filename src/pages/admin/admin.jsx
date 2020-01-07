@@ -46,7 +46,7 @@ export default class Admin extends Component {
             </Switch>
           </Content>
           <Footer style={{ textAlign: 'center', color: 'rgba(0, 0, 0, 0.5)'}}>
-            推荐使用谷歌浏览器，可以获得更佳页面操作体验
+            React+Antd开发商品后台管理系统
           </Footer>
         </Layout>
       </Layout>
