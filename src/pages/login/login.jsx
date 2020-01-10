@@ -9,8 +9,6 @@ import './login.less'
 const Item = Form.Item
 
 class Login extends Component {
-
-
   handleSubmit = e => {
     // 阻止事件的默认行为: 阻止表单的提交
     e.preventDefault()
