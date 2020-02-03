@@ -12,6 +12,7 @@ import User from '../user/user'
 import Bar from '../charts/bar'
 import Line from '../charts/line'
 import Pie from '../charts/pie'
+import Order from '../order/order'
 const { Footer, Sider, Content } = Layout
 
 
@@ -42,11 +43,12 @@ export default class Admin extends Component {
               <Route path='/charts/bar' component={Bar} />
               <Route path='/charts/line' component={Line} />
               <Route path='/charts/pie' component={Pie} />
+              <Route path='/report/order' component={Order} />
               <Redirect to="/home"/>
             </Switch>
           </Content>
           <Footer style={{ textAlign: 'center', color: 'rgba(0, 0, 0, 0.5)'}}>
-            React+Antd开发商品后台管理系统
+            推荐使用谷歌浏览器，可以获得更佳页面操作体验
           </Footer>
         </Layout>
       </Layout>

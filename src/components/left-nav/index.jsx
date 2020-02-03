@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom'
 import { Menu, Icon } from 'antd'
 
 import menuList from '../../config/menuConfig'
-// import logo from '../../assets/images/logo.png'
+import logo from '../../assets/images/logo.png'
 import './index.less'
 import memoryUtils from '../../utils/memoryUtils';
 
@@ -143,7 +143,11 @@ class LeftNav extends Component {
   componentWillMount () {
    this.menuNodes = this.getMenuNodes2(menuList)
   }
+
+
   render() {
+    console.log('left-nav render()')
+    
     // 得到当前请求路径, 作为选中菜单项的key
     let selectKey = this.props.location.pathname // /product/xxx
     if (selectKey.indexOf('/product')===0) {
@@ -153,8 +157,8 @@ class LeftNav extends Component {
     return (
       <div className="left-nav">
         <Link className="left-nav-link" to="/home">
-          {/* <img src={logo} alt="logo"/> */}
-          <h1>商品后台管理系统</h1>
+          <img src={logo} alt="logo"/>
+          <h1>硅谷后台</h1>
         </Link>
 
         {/* 

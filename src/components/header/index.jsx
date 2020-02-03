@@ -1,94 +1,123 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'
+import { Modal } from 'antd'
+
+import LinkButton from '../../components/link-button'
+import {reqWeather} from '../../api'
+import { formateDate } from '../../utils/dateUtils'
+import menuList from '../../config/menuConfig'
 import memoryUtils from '../../utils/memoryUtils'
-import storageUtils from '../../utils/storageUtils';
-import { Modal, message } from 'antd';
-import LinkButton from '../../components/link-button';
-import menuConfig from '../../config/menuConfig';
-import { formateData } from '../../utils/dataUtils';
-import {reqWeather} from '../../api';
+import storageUtils from '../../utils/storageUtils'
+
 import './index.less'
-const { confirm } = Modal;
+
 class Header extends Component {
+
+
   state = {
-    currentTiem: formateData(Date.now()),
-    dayPictureUrl:'', 
-    weather: ''
+    currentTime: formateDate(Date.now()),
+    dayPictureUrl: '', // 图片url
+    weather: '', // 天气文本
   }
 
-  componentDidMount() {
-    this.interval = setInterval(() => {
-      this.setState({
-        currentTiem: formateData(Date.now())
-      })
-    }, 1000);
-  //获取天气信息
-    this.getWeather()
-  }
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  getWeather=async()=>{
-      const {dayPictureUrl, weather}=await reqWeather('贵阳')
-      this.setState({
-        dayPictureUrl:dayPictureUrl, 
-        weather: weather
-      })
-  }
-
+  /* 
+    退出登陆
+  */
   logout = () => {
-    // 显示确认提升
-    confirm({
-      title: '你确定要退出登录吗?',
-      cancelText: '取消',
-      okText: '确定',
+    // 显示确认提示
+    Modal.confirm({
+      title: '确认退出吗?',
       onOk: () => {
+        console.log('OK');
+        // 确定后, 删除存储的用户信息
+        // local中的
         storageUtils.removeUser()
+        // 内存中的
         memoryUtils.user = {}
-        message.success('退出成功!')
+        // 跳转到登陆界面
         this.props.history.replace('/login')
       },
       onCancel() {
-        console.log('取消');
+        console.log('Cancel');
       },
-    });
-    // 确定后，删除存储的用户信息
+    })
+    
   }
 
-  // 获取当前请求的path得到对应的title
+  /* 
+  根据当前请求的path得到对应的title
+  */
   getTitle = () => {
     let title = ''
     const path = this.props.location.pathname
-    menuConfig.forEach(item => {
-      if (item.key === path) {
+    menuList.forEach(item => {
+      if (item.key===path) {
         title = item.title
       } else if (item.children) {
-        const cItem = item.children.find(cItem => cItem.key === path)
+        const cItem = item.children.find(cItem => path.indexOf(cItem.key)===0)
         if (cItem) {
           title = cItem.title
         }
       }
+      
     })
+
     return title
   }
+
+  /* 
+  获取天气信息显示
+  */
+  getWeather = async () => {
+    // 发请求
+    const { dayPictureUrl, weather } = await reqWeather('北京')
+    // 更新状态
+    this.setState({
+      dayPictureUrl, 
+      weather
+    })
+  }
+
+
+  componentDidMount () {
+    // 启动循环定时器
+    this.intervalId = setInterval(() => {
+      // 将currentTime更新为当前时间值
+      this.setState({
+        currentTime: formateDate(Date.now())
+      })
+    }, 1000);
+    // 发jsonp请求获取天气信息显示
+    this.getWeather()
+  }
+
+  componentWillUnmount () {
+    // 清除定时器
+    clearInterval(this.intervalId)
+  }
+
+
   render() {
-    const { currentTiem ,dayPictureUrl,weather} = this.state
+
+    const { currentTime, dayPictureUrl, weather } = this.state 
+
     const user = memoryUtils.user
+    // 得到当前需要显示的title
     const title = this.getTitle()
+
     return (
       <div className="header">
         <div className="header-top">
-          欢迎 ,{user.username} &nbsp;&nbsp;
-         <LinkButton onClick={this.logout}>退出</LinkButton>
+          欢迎, {user.username} &nbsp;&nbsp;
+
+          {/* 组件的标签体作为标签的children属性传入 */}
+          <LinkButton onClick={this.logout}>退出</LinkButton>
         </div>
         <div className="header-bottom">
-          <div className="header-bottom-left">
-            {title}
-          </div>
+          <div className="header-bottom-left">{title}</div>
           <div className="header-bottom-right">
-            <span>{currentTiem}</span>
-            <img src={dayPictureUrl} alt="weather" />
+            <span>{ currentTime }</span>
+            <img src={dayPictureUrl} alt="weather"/>
             <span>{weather}</span>
           </div>
         </div>

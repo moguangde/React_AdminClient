@@ -26,6 +26,7 @@ export const reqWeather = (city) => {
       } else { // 失败的
         message.error('获取天气信息失败')
       }
+
     })
   })
   
@@ -58,6 +59,7 @@ export const reqCategory = (categoryId) => ajax(BASE + '/manage/category/info', 
     categoryId
   }
 })
+
 /* 获取商品分页列表 */
 export const reqProducts = (pageNum, pageSize) => ajax(BASE + '/manage/product/list', {
   params: { // 包含所有query参数的对象
