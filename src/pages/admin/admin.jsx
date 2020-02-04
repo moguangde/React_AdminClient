@@ -48,7 +48,7 @@ export default class Admin extends Component {
             </Switch>
           </Content>
           <Footer style={{ textAlign: 'center', color: 'rgba(0, 0, 0, 0.5)'}}>
-            推荐使用谷歌浏览器，可以获得更佳页面操作体验
+            贵州民族大学计科2班莫光德毕业论文设计
           </Footer>
         </Layout>
       </Layout>

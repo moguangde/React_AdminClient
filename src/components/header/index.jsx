@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { Modal } from 'antd'
 
 import LinkButton from '../../components/link-button'
-import {reqWeather} from '../../api'
+import {reqWeather , reqAddress } from '../../api'
 import { formateDate } from '../../utils/dateUtils'
 import menuList from '../../config/menuConfig'
 import memoryUtils from '../../utils/memoryUtils'
@@ -18,6 +18,7 @@ class Header extends Component {
     currentTime: formateDate(Date.now()),
     dayPictureUrl: '', // 图片url
     weather: '', // 天气文本
+    address: ''//获取地址
   }
 
   /* 
@@ -77,7 +78,23 @@ class Header extends Component {
       weather
     })
   }
-
+  async getAddress(){
+    try {
+      const {address,address_detail}= await reqAddress()
+      // 坐标取值不准确
+      // let {x,y}=point
+      // x=(x/100000).toFixed(4)-13
+      // y=(y/100000).toFixed(4)-13
+      let {city}=address_detail
+      if(!city){city='深圳'}
+      this.getWeather(city)
+      this.setState({
+        address
+      })
+    } catch (error) {
+      this.getWeather()
+    }
+  }
 
   componentDidMount () {
     // 启动循环定时器
@@ -89,6 +106,7 @@ class Header extends Component {
     }, 1000);
     // 发jsonp请求获取天气信息显示
     this.getWeather()
+    this.getAddress()
   }
 
   componentWillUnmount () {
@@ -99,7 +117,7 @@ class Header extends Component {
 
   render() {
 
-    const { currentTime, dayPictureUrl, weather } = this.state 
+    const { currentTime, dayPictureUrl, weather , address} = this.state 
 
     const user = memoryUtils.user
     // 得到当前需要显示的title
@@ -116,7 +134,8 @@ class Header extends Component {
         <div className="header-bottom">
           <div className="header-bottom-left">{title}</div>
           <div className="header-bottom-right">
-            <span>{ currentTime }</span>
+            <span>{ currentTime }</span>&nbsp;&nbsp;&nbsp;
+            <span>{address}</span>
             <img src={dayPictureUrl} alt="weather"/>
             <span>{weather}</span>
           </div>

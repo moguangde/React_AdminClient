@@ -7,7 +7,7 @@ import {
   message
 } from 'antd'
 import {formateDate} from "../../utils/dateUtils"
-import LinkButton from "../../components/link-button/index"
+// import LinkButton from "../../components/link-button/index"
 import {reqDeleteUser, reqUsers, reqAddOrUpdateUser} from "../../api/index";
 import UserForm from './user-form'
 
@@ -20,6 +20,7 @@ export default class User extends Component {
     users: [], // 所有用户列表
     roles: [], // 所有角色列表
     isShow: false, // 是否显示确认框
+    istrue:1//1表示添加用户，2表示修改用户
   }
 
   initColumns = () => {
@@ -66,7 +67,7 @@ export default class User extends Component {
    */
   showAdd = () => {
     this.user = null // 去除前面保存的user
-    this.setState({isShow: true})
+    this.setState({isShow: true,istrue:1})
   }
 
   /*
@@ -75,7 +76,8 @@ export default class User extends Component {
   showUpdate = (user) => {
     this.user = user // 保存user
     this.setState({
-      isShow: true
+      isShow: true,
+      istrue:2
     })
   }
 
@@ -101,19 +103,19 @@ export default class User extends Component {
   添加/更新用户
    */
   addOrUpdateUser = async () => {
-
-    this.setState({isShow: false})
-
+    const {istrue}=this.state
     this.form.validateFields(async (err, values) => {
       if (!err) {
+        this.setState({isShow: false})
         // 如果this有user
         if (this.user) {
           values._id = this.user._id
         }
- 
+        this.form.resetFields() // 重置输入数据(变成了初始值)
         const result = await reqAddOrUpdateUser(values)
         if (result.status===0) {
-          message.success('添加/更新用户成功!')
+         let m= istrue===1 ? '添加' : '修改'
+          message.success(m+'用户成功!')
           this.getUsers()
         } else {
           message.error(result.msg)
@@ -175,7 +177,6 @@ export default class User extends Component {
           visible={isShow}
           onOk={this.addOrUpdateUser}
           onCancel={() => {
-            this.form.resetFields()
             this.setState({isShow: false})
           }}
         >

@@ -33,7 +33,18 @@ const menuList = [
     key: '/role',
     icon: 'safety',
   },
-
+  {
+    title: '报表模块',
+    key: '/report ',
+    icon: 'area-chart',
+    children: [
+      {
+        title: '订单统计',
+        key: '/report/order',
+        icon: 'bar-chart'
+      }
+    ]
+  },
   {
     title: '图形图表',
     key: '/charts',
@@ -55,19 +66,7 @@ const menuList = [
         icon: 'pie-chart'
       },
     ]
-  },
-  {
-    title: '报表模块',
-    key: '/report ',
-    icon: 'area-chart',
-    children: [
-      {
-        title: '订单统计',
-        key: '/report/order',
-        icon: 'bar-chart'
-      }
-    ]
-  },
+  }
 ]
 
 export default menuList
