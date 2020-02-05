@@ -71,8 +71,12 @@ class Header extends Component {
   获取天气信息显示
   */
   getWeather = async () => {
+
+    const {address_detail}= await reqAddress()
+    let {city}=address_detail
+    // console.log(address,city)
     // 发请求
-    const { dayPictureUrl, weather } = await reqWeather('北京')
+    const { dayPictureUrl, weather } = await reqWeather(city)
     // 更新状态
     this.setState({
       dayPictureUrl, 
@@ -87,7 +91,7 @@ class Header extends Component {
       // x=(x/100000).toFixed(4)-13
       // y=(y/100000).toFixed(4)-13
       let {city}=address_detail
-      if(!city){city='深圳'}
+      if(!city){city='贵阳'}
       this.getWeather(city)
       this.setState({
         address
