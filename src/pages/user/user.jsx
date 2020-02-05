@@ -178,6 +178,7 @@ export default class User extends Component {
           onOk={this.addOrUpdateUser}
           onCancel={() => {
             this.setState({isShow: false})
+            this.form.resetFields()
           }}
         >
           <UserForm

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Modal } from 'antd'
+import { Modal , message } from 'antd'
 
 import LinkButton from '../../components/link-button'
 import {reqWeather , reqAddress } from '../../api'
@@ -30,6 +30,7 @@ class Header extends Component {
       title: '确认退出吗?',
       onOk: () => {
         console.log('OK');
+        message.success('退出成功!')
         // 确定后, 删除存储的用户信息
         // local中的
         storageUtils.removeUser()

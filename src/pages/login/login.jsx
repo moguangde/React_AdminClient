@@ -118,7 +118,7 @@ class Login extends Component {
               
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" className="login-form-button">登 陆</Button>
+              <Button type="primary" htmlType="submit" className="login-form-button">立 即 登 陆</Button>
             </Form.Item>
           </Form>
         </div>
