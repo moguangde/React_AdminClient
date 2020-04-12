@@ -125,13 +125,14 @@ class Header extends Component {
     const { currentTime, dayPictureUrl, weather , address} = this.state 
 
     const user = memoryUtils.user
+    const value = memoryUtils.value
     // 得到当前需要显示的title
     const title = this.getTitle()
 
     return (
       <div className="header">
         <div className="header-top">
-          欢迎, {user.username} &nbsp;&nbsp;
+          {value===1?`欢迎${user.username}超级管理员`:value===2?`欢迎${user.username}普通管理员`:`欢迎${user.username}管理员`} &nbsp;&nbsp;
 
           {/* 组件的标签体作为标签的children属性传入 */}
           <LinkButton onClick={this.logout}>退出</LinkButton>

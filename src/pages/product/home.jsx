@@ -45,17 +45,29 @@ export default class ProductHome extends Component {
     this.columns = [
       {
         title: '商品名称',
-        dataIndex: 'name'
+        dataIndex: 'name',
+        width: 150
       },
       {
         title: '商品描述',
-        dataIndex: 'desc'
+        dataIndex: 'desc',
+        width: 200,
+      },
+      {
+        title: '品类管理',
+        dataIndex: 'categoryId',
+        width: 200,
+      },
+      {
+        title: '商品详情',
+        dataIndex: 'detail',
+        width: 400,
       },
       {
         title: '价格',
         width: 100,
         dataIndex: 'price',
-        render: (price) => '¥' + price
+        render: (price) => price+'元'
       },
       {
         title: '状态',
@@ -70,7 +82,7 @@ export default class ProductHome extends Component {
           }
           return (
             <span>
-              <Button type="danger" onClick={() => { this.updateStatus(_id, status)}}>{btnText}</Button><br />
+              <Button type="danger" size="small" onClick={() => { this.updateStatus(_id, status)}}>{btnText}</Button><br />
               <span style={{textAlign:"center"}}>{text}</span>
             </span>
           )
@@ -144,6 +156,7 @@ export default class ProductHome extends Component {
   render() {
 
     const { loading, products, total, searchType, searchName } = this.state
+    console.log('object',searchType,searchName);
 
     const title = (
       <span>
@@ -154,6 +167,10 @@ export default class ProductHome extends Component {
         >
           <Option value="productName">按名称搜索</Option>
           <Option value="productDesc">按描述搜索</Option>
+          <Option value="productCategoryId">按品类名称搜索</Option>
+          <Option value="productDetail">按商品详情搜索</Option>
+          {/* <Option value="productPrice">按价格搜索</Option>
+          <Option value="productStatus">按状态搜索(1下架、2上架)</Option> */}
         </Select>
         <Input 
           style={{ width: 200, margin: '0 10px' }} 

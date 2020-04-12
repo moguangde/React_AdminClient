@@ -161,7 +161,7 @@ class ProductAddUpdate extends Component {
               <Select>
                 <Option value=''>未选择</Option>
                 {
-                  categorys.map(c => <Option value={c._id} key={c._id}>{c.name}</Option>)
+                  categorys.map(c => <Option value={c.name} key={c._id}>{c.name}</Option>)
                 }
               </Select>
             )}

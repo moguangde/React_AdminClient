@@ -1,19 +1,31 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Form, Icon, Input, Button, message } from 'antd'
+import { Form, Icon, Input, Button, message,Radio } from 'antd'
 import memoryUtils from '../../utils/memoryUtils'
 import storageUtils from '../../utils/storageUtils'
 import { reqLogin } from '../../api'
 import logo from '../../assets/images/logo.png'
+import loginBG from './images/login_admin_bg.jpg'
+import loginFG from './images/login_fj_bg.jpg'
 import './login.less'
 const Item = Form.Item
 
 class Login extends Component {
+  state = {
+    value: 1,
+  };
 
+  onChange = e => {
+    console.log('radio checked', e.target.value);
+    this.setState({
+      value: e.target.value,
+    });
+  };
 
   handleSubmit = e => {
     // 阻止事件的默认行为: 阻止表单的提交
     e.preventDefault()
+    const {value}=this.state
     // 对表单所有字段进行统一验证
     this.props.form.validateFields(async (err, {username, password}) => {
       if (!err) {
@@ -25,9 +37,13 @@ class Login extends Component {
           // 将user信息保存到local
           const user = result.data
           // localStorage.setItem('user_key', JSON.stringify(user))
+          storageUtils.saveUser(value)
           storageUtils.saveUser(user)
+       
           // 保存到内存中
+          memoryUtils.value = value
           memoryUtils.user = user
+      
 
           // 跳转到管理界面
           this.props.history.replace('/')
@@ -71,6 +87,7 @@ class Login extends Component {
     }
 
     const { getFieldDecorator } = this.props.form
+    const {value}=this.state
 
     return (
       <div className="login">
@@ -78,8 +95,11 @@ class Login extends Component {
           <img src={logo} alt="logo"/>
           <h1>商品后台管理系统</h1>
         </div>
+        <div className="login-bg">
+          <img src={value===1?loginBG:loginFG} alt=''/>
+        </div>
         <div className="login-content">
-          <h1>用户登陆</h1>
+          <h1>后台管理系统登陆</h1>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Item>
               {
@@ -120,6 +140,12 @@ class Login extends Component {
             <Form.Item>
               <Button type="primary" htmlType="submit" className="login-form-button">立 即 登 陆</Button>
             </Form.Item>
+            <div className='radio'>
+              <Radio.Group onChange={this.onChange} value={this.state.value}>
+                <Radio value={1}>超级管理员</Radio>
+                <Radio value={2}>普通管理员</Radio>
+              </Radio.Group>
+            </div>
           </Form>
         </div>
       </div>

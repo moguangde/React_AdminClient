@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-01-19 10:03:41
+ * @LastEditTime: 2020-04-11 17:44:34
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \admin-client_final\public\index.html
+ -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -21,10 +29,23 @@
     -->
     <title>React App</title>
     <link rel="stylesheet" href="/css/reset.css">
+    <style type="text/css">
+			body{
+				margin: 0;
+			}
+			#canvas{
+        position: relative;
+        z-index: -99999;
+        margin-top: -1000px;
+				display: block;
+				background: rgb(255, 255, 255);
+			}
+		</style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <canvas id="canvas"></canvas>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -36,4 +57,97 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <script>
+    window.requestAnimationFrame = (function(){
+        return window.requestAnimationFrame ||
+               window.webkitRequestAnimationFrame ||
+               window.mozRequestAnimationFrame ||
+               function( callback ){
+                    window.setTimeout( callback, 1000 / 2);
+               };
+    })();
+    var myCanvas = document.getElementById("canvas");
+    var ctx = myCanvas.getContext("2d");//getContext 设置画笔
+    var num = 250;
+    var w,h;
+    var duixiang = [];
+    var move = {};
+    function widthheight(){
+        w = myCanvas.width = window.innerWidth;
+        h = myCanvas.height = window.innerHeight;
+        for(var i = 0;i < num;i++){
+            duixiang[i] = {
+                x:Math.random()*w,
+                y:Math.random()*h,
+                cX:Math.random()*0.6-0.3,
+                cY:Math.random()*0.6-0.3
+            }
+            console.log(duixiang[i])
+            Cricle(duixiang[i].x,duixiang[i].y);
+        }
+    };widthheight();//获取浏览器的等宽度等高
+
+    function Cricle(x,y){
+        ctx.save();//保存路径
+        ctx.fillStyle = "royalblue";//填充的背景颜色
+        ctx.beginPath();//开始绘画
+        ctx.arc(x,y,1,Math.PI*2,0);//绘画圆 x y 半径（大小） 角度  一个PI 是180 * 2 = 360    真假 0/1 true/false
+        ctx.closePath();//结束绘画
+        ctx.fill();//填充背景颜色
+        ctx.restore();//回复路径
+    };Cricle();
+
+
+    !function draw(){
+        ctx.clearRect(0,0,w,h)//先清除画布上的点
+        for(var i = 0;i < num;i++){
+            duixiang[i].x += duixiang[i].cX;
+            duixiang[i].y += duixiang[i].cY;
+            if(duixiang[i].x>w || duixiang[i].x<0){
+                duixiang[i].cX = -duixiang[i].cX;
+            }
+            if(duixiang[i].y>h || duixiang[i].y<0){
+                duixiang[i].cY = -duixiang[i].cY;
+            }
+            Cricle(duixiang[i].x,duixiang[i].y);
+            //勾股定理判断两点是否连线
+            for(var j = i + 1;j < num;j++){
+                if( (duixiang[i].x-duixiang[j].x)*(duixiang[i].x-duixiang[j].x)+(duixiang[i].y-duixiang[j].y)*(duixiang[i].y-duixiang[j].y) <= 55*55 ){
+                    line(duixiang[i].x,duixiang[i].y,duixiang[j].x,duixiang[j].y)
+                }
+                if(move.x){
+                    if( (duixiang[i].x-move.x)*(duixiang[i].x-move.x)+(duixiang[i].y-move.y)*(duixiang[i].y-move.y) <= 100*100 ){
+                        line(duixiang[i].x,duixiang[i].y,move.x,move.y)
+                    }
+                }
+            }
+        }
+        window.requestAnimationFrame(draw)
+    }();
+
+    //绘制线条
+    function line(x1,y1,x2,y2){
+        var color = ctx.createLinearGradient(x1,y1,x2,y2);
+        color.addColorStop(0,"#019d99");
+        color.addColorStop(1,"#019ee5");
+        //ctx.save();
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(x1,y1);
+        ctx.lineTo(x2,y2);
+        ctx.stroke();
+        //ctx.restore();
+    }
+
+
+    document.onmousemove = function(e){
+        move.x = e.clientX;
+        move.y = e.clientY;
+    }
+    console.log(move)
+
+    window.onresize = function(){
+        location.reload();
+    }
+</script>
 </html>

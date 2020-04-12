@@ -53,8 +53,8 @@ export default class User extends Component {
         title: '操作',
         render: (user) => (
           <span>
-            <Button type="primary" onClick={() => this.showUpdate(user)} style={{margin:10}}>修改</Button>
-            <Button type="danger" onClick={() => this.deleteUser(user)}>删除</Button>
+            <Button type="primary" size="small" onClick={() => this.showUpdate(user)} style={{margin:10}}>修改</Button>
+            <Button type="danger" size="small" onClick={() => this.deleteUser(user)}>删除</Button>
           </span>
         )
       },
@@ -169,7 +169,7 @@ export default class User extends Component {
           rowKey='_id'
           dataSource={users}
           columns={this.columns}
-          pagination={{defaultPageSize: 2}}
+          pagination={{defaultPageSize: 6}}
         />
 
         <Modal

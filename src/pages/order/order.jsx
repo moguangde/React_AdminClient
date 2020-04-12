@@ -89,7 +89,7 @@ export default class Test extends Component {
   }
   render() {
     const title=(
-      <span>
+      <span className='button'>
         <Button type="primary">本周</Button>
         <Button>上周</Button>
         <Button>本月</Button>

@@ -18,7 +18,7 @@ const Item = List.Item
 export default class ProductDetail extends Component {
 
   state = {
-    categoryName: '',
+    // categoryName: '',
     product: memoryUtils.product
   }
 
@@ -48,7 +48,7 @@ export default class ProductDetail extends Component {
   }
 
   render() {
-    const { categoryName } = this.state
+    // const { categoryName } = this.state
     const product = this.state.product
    
     const title = (
@@ -76,7 +76,7 @@ export default class ProductDetail extends Component {
           </Item>
           <Item>
             <span className="detail-left">所属分类:</span>
-            <span>{categoryName}</span>
+            <span>{product.categoryId}</span>
           </Item>
           <Item>
             <span className="detail-left">商品图片:</span>
